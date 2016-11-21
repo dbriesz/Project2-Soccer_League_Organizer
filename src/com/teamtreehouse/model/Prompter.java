@@ -1,10 +1,13 @@
 package com.teamtreehouse.model;
 
+import sun.jvm.hotspot.jdi.ArrayReferenceImpl;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +15,21 @@ import java.util.Queue;
 
 public class Prompter {
 
-    private Team mTeam;
+    private List<Player> mAllPlayers;
+    private List<Team> mTeams;
     private BufferedReader mReader;
     private Queue<Player> mPlayerQueue;
     private Map<String, String> mMenu;
 
-    public Prompter(Team team) {
-        mTeam = team;
+    public Prompter(Player[] players) {
+        mAllPlayers = new ArrayList<>();
+        Collections.addAll(mAllPlayers, players);
+        mTeams = new ArrayList<>();
         mReader = new BufferedReader(new InputStreamReader(System.in));
         mPlayerQueue = new ArrayDeque<Player>();
         mMenu = new HashMap<String, String>();
         mMenu.put("create", "Create a new team");
+        mMenu.put("add", "Add players to a team");
     }
 
     private String promptAction() throws IOException {
@@ -44,7 +51,7 @@ public class Prompter {
                 choice = promptAction();
                 switch (choice) {
                     case "create":
-                        Team team = createTeam();
+                        createTeam();
                         System.out.printf("");
                         break;
                     case "quit":
@@ -58,11 +65,12 @@ public class Prompter {
         } while (!choice.equals("quit"));
     }
 
-    public Team createTeam() throws IOException {
+    public void createTeam() throws IOException {
         System.out.print("Please enter a new team name: ");
         String teamName = mReader.readLine();
         System.out.print("Please enter the coach's name for the new team: ");
-        String coach = mReader.readLine();
-        return new Team();
+        String coachName = mReader.readLine();
+        Team team = new Team(teamName, coachName);
+        mTeams.add(team);
     }
 }

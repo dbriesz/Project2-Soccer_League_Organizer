@@ -5,13 +5,19 @@ import java.util.List;
 
 public class Team {
 
+    private String mTeamName;
+    private String mCoachName;
     private List<Player> mTeam;
 
-    public Team() {
+    public Team(String teamName, String coachName) {
+        mTeamName = teamName;
+        mCoachName = coachName;
         mTeam = new ArrayList<Player>();
     }
 
     public void addPlayer(Player player) {
         mTeam.add(player);
     }
+
+
 }
