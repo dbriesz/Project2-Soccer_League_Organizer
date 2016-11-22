@@ -19,7 +19,15 @@ public class Team {
         mTeam.add(player);
     }
 
+    public void removePlayer(Player player) {
+        mTeam.remove(player);
+    }
+
     public String getTeamName() {
         return mTeamName;
+    }
+
+    public List<Player> getAllPlayers() {
+        return mTeam;
     }
 }

@@ -29,6 +29,7 @@ public class Prompter {
         mMenu = new HashMap<String, String>();
         mMenu.put("create", "Create a new team");
         mMenu.put("add", "Add a player to a team");
+        mMenu.put("remove", "Remove a player from a team");
         mMenu.put("quit", "Exit the program");
     }
 
@@ -55,9 +56,15 @@ public class Prompter {
                         break;
                     case "add":
                         mTeam = promptForTeam();
-                        mPlayer = promptToAddPlayer();
+                        mPlayer = promptForPlayer();
                         mTeam.addPlayer(mPlayer);
-                        System.out.printf("Added %s to team %s.%n", mPlayer.getPlayerName(), mTeam.getTeamName());
+                        System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerName(), mTeam.getTeamName());
+                        break;
+                    case "remove":
+                        mTeam = promptForTeam();
+                        mPlayer = promptByTeam();
+                        mTeam.removePlayer(mPlayer);
+                        System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerName(), mTeam.getTeamName());
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -80,7 +87,7 @@ public class Prompter {
         String coachName = mReader.readLine();
         Team team = new Team(teamName, coachName);
         mTeams.add(team);
-        System.out.printf("Added %s to the list of teams with %s as its coach.%n", teamName, coachName);
+        System.out.printf("Added %s to the list of teams with %s as its coach.%n%n", teamName, coachName);
     }
 
     private int promptForTeamIndex(List<Team> teams) throws IOException {
@@ -89,7 +96,7 @@ public class Prompter {
             System.out.printf("%d.)  %s %n", counter, team.getTeamName());
             counter++;
         }
-        System.out.print("Choose the team you would like to add a player to:  ");
+        System.out.print("Select the team:  ");
         String optionAsString = mReader.readLine();
         int choice = Integer.parseInt(optionAsString.trim());
         return choice - 1;
@@ -101,7 +108,7 @@ public class Prompter {
             System.out.printf("%d.)  %s %n", counter, player.getPlayerName());
             counter++;
         }
-        System.out.printf("Choose the player you would like to add to team %s:  ", mTeam.getTeamName());
+        System.out.printf("Select a player:  ", mTeam.getTeamName());
         String optionAsString = mReader.readLine();
         int choice = Integer.parseInt(optionAsString.trim());
         return choice - 1;
@@ -112,8 +119,13 @@ public class Prompter {
         return mTeams.get(index);
     }
 
-    public Player promptToAddPlayer() throws IOException {
+    public Player promptForPlayer() throws IOException {
         int index = promptForPlayerIndex(mAllPlayers);
         return mAllPlayers.get(index);
+    }
+
+    public Player promptByTeam() throws IOException {
+        int index = promptForPlayerIndex(mTeam.getAllPlayers());
+        return mTeam.getAllPlayers().get(index);
     }
 }

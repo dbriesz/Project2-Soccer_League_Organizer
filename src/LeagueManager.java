@@ -1,7 +1,6 @@
 import com.teamtreehouse.model.Player;
 import com.teamtreehouse.model.Players;
 import com.teamtreehouse.model.Prompter;
-import com.teamtreehouse.model.Team;
 
 import java.io.IOException;
 
