@@ -19,5 +19,7 @@ public class Team {
         mTeam.add(player);
     }
 
-
+    public String getTeamName() {
+        return mTeamName;
+    }
 }

@@ -13,11 +13,6 @@ public class LeagueManager {
         Prompter prompter = new Prompter(Players.load());
         System.out.printf("There are currently %d registered players.%n", players.length);
 
-        try {
-            prompter.createTeam();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        prompter.run();
     }
-
 }
