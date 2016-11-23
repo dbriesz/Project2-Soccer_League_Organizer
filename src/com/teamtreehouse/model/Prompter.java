@@ -3,13 +3,11 @@ package com.teamtreehouse.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 public class Prompter {
     public Team mTeam;
@@ -17,7 +15,6 @@ public class Prompter {
     private List<Player> mAllPlayers;
     private List<Team> mTeams;
     private BufferedReader mReader;
-    private Queue<Player> mPlayerQueue;
     private Map<String, String> mMenu;
 
     public Prompter(Player[] players) {
@@ -25,7 +22,6 @@ public class Prompter {
         Collections.addAll(mAllPlayers, players);
         mTeams = new ArrayList<>();
         mReader = new BufferedReader(new InputStreamReader(System.in));
-        mPlayerQueue = new ArrayDeque<Player>();
         mMenu = new HashMap<String, String>();
         mMenu.put("create", "Create a new team");
         mMenu.put("add", "Add a player to a team");
@@ -87,6 +83,7 @@ public class Prompter {
         String coachName = mReader.readLine();
         Team team = new Team(teamName, coachName);
         mTeams.add(team);
+        Collections.sort(mTeams);
         System.out.printf("Added %s to the list of teams with %s as its coach.%n%n", teamName, coachName);
     }
 
