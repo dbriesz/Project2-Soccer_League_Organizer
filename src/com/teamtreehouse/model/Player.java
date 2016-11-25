@@ -7,7 +7,7 @@ public class Player implements Comparable<Player>, Serializable {
 
     private String firstName;
     private String lastName;
-    private String fullName;
+    private String playerInfo;
     private int heightInInches;
     private boolean previousExperience;
 
@@ -26,9 +26,14 @@ public class Player implements Comparable<Player>, Serializable {
         return lastName;
     }
 
-    public String getPlayerName() {
-        fullName = getFirstName() + " " + getLastName();
-        return fullName;
+    public String getPlayerInfo() {
+        if (isPreviousExperience()) {
+            playerInfo = getFirstName() + " " + getLastName() + ", " + getHeightInInches() + "\" (height), " + "has previous experience";
+        } else {
+            playerInfo = getFirstName() + " " + getLastName() + ", " + getHeightInInches() + "\" (height), " + "no previous experience";
+        }
+
+        return playerInfo;
     }
 
     public int getHeightInInches() {
@@ -41,8 +46,11 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public int compareTo(Player other) {
-        // We always want to sort by last name then first name
-        return 0;
+        Player player = (Player) other;
+        if (equals(player)) {
+            return 0;
+        }
+        return lastName.compareTo(other.lastName);
     }
 
     @Override

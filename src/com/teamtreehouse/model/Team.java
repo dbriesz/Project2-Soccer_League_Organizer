@@ -1,27 +1,29 @@
 package com.teamtreehouse.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Team implements Comparable {
 
     private String mTeamName;
     private String mCoachName;
-    private List<Player> mTeam;
-    private List<Team> mTeams;
+    private List<Player> mPlayers;
 
     public Team(String teamName, String coachName) {
         mTeamName = teamName;
         mCoachName = coachName;
-        mTeam = new ArrayList<Player>();
+        mPlayers = new ArrayList<Player>();
     }
 
     public void addPlayer(Player player) {
-        mTeam.add(player);
+        mPlayers.add(player);
+        Collections.sort(mPlayers);
     }
 
     public void removePlayer(Player player) {
-        mTeam.remove(player);
+        mPlayers.remove(player);
+        Collections.sort(mPlayers);
     }
 
     public String getTeamName() { return mTeamName; }
@@ -36,6 +38,6 @@ public class Team implements Comparable {
     }
 
     public List<Player> getAllPlayers() {
-        return mTeam;
+        return mPlayers;
     }
 }

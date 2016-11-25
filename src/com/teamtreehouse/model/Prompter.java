@@ -54,13 +54,13 @@ public class Prompter {
                         mTeam = promptForTeam();
                         mPlayer = promptForPlayer();
                         mTeam.addPlayer(mPlayer);
-                        System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerName(), mTeam.getTeamName());
+                        System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
                         break;
                     case "remove":
                         mTeam = promptForTeam();
                         mPlayer = promptByTeam();
                         mTeam.removePlayer(mPlayer);
-                        System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerName(), mTeam.getTeamName());
+                        System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -102,7 +102,7 @@ public class Prompter {
     private int promptForPlayerIndex(List<Player> players) throws IOException {
         int counter = 1;
         for (Player player : players) {
-            System.out.printf("%d.)  %s %n", counter, player.getPlayerName());
+            System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
             counter++;
         }
         System.out.printf("Select a player:  ", mTeam.getTeamName());
