@@ -20,6 +20,7 @@ public class Prompter {
     public Prompter(Player[] players) {
         mAllPlayers = new ArrayList<>();
         Collections.addAll(mAllPlayers, players);
+        Collections.sort(mAllPlayers);
         mTeams = new ArrayList<>();
         mReader = new BufferedReader(new InputStreamReader(System.in));
         mMenu = new HashMap<String, String>();
