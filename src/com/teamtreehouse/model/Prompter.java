@@ -55,19 +55,23 @@ public class Prompter {
                     case "add":
                         mTeam = promptForTeam();
                         if (checkTeamSize(mTeam)) {
-                            System.out.println("Sorry, teams are allowed a maximum 11 players.");
+                            System.out.println("%nSorry, teams are allowed a maximum 11 players.%n%n");
                             break;
                         }
                         mPlayer = promptForPlayer();
+                        if (checkForDuplicate(mPlayer)) {
+                            System.out.println("%nSorry, that player is already on a team.%n%n");
+                            break;
+                        }
                         mTeam.addPlayer(mPlayer);
-                        System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        System.out.printf("%nAdded %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
                         break;
                     case "balance":
                         balanceReport();
                         break;
                     case "create":
                         if (checkTeamMax()) {
-                            System.out.println("Sorry, the team limit has been reached - no new teams may be created.");
+                            System.out.println("%nSorry, the team limit has been reached - no new teams may be created.%n%n");
                             break;
                         }
                         createTeam();
@@ -80,7 +84,7 @@ public class Prompter {
                         mTeam = promptForTeam();
                         mPlayer = promptByTeam();
                         mTeam.removePlayer(mPlayer);
-                        System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        System.out.printf("%nRemoved %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
                         break;
                     case "roster":
                         mTeam = promptForTeam();
@@ -90,11 +94,11 @@ public class Prompter {
                         System.out.println("Goodbye!");
                         break;
                     default:
-                        System.out.printf("Unknown choice:  '%s'. Try again.  %n%n%n",
+                        System.out.printf("%nUnknown choice:  '%s'. Try again.  %n%n",
                                 choice);
                 }
             } catch (IOException ioe) {
-                System.out.println("Problem with input");
+                System.out.println("%nProblem with input%n%n");
                 ioe.printStackTrace();
             }
         } while (!choice.equals("quit"));
@@ -195,7 +199,6 @@ public class Prompter {
     }
 
     public boolean checkTeamSize(Team team) {
-        boolean size;
         int counter = 0;
         for (Player player : team.getAllPlayers()) {
             counter++;
@@ -213,5 +216,17 @@ public class Prompter {
         } else {
             return false;
         }
+    }
+
+    public boolean checkForDuplicate(Player player) {
+        boolean isMatch = false;
+        for (Team team : mTeams) {
+            for (Player play : team.getAllPlayers()) {
+                if (team.getAllPlayers().contains(player)) {
+                    isMatch = true;
+                }
+            }
+        }
+        return isMatch;
     }
 }

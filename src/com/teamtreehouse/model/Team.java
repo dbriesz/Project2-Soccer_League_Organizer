@@ -8,7 +8,7 @@ public class Team implements Comparable {
 
     private String mTeamName;
     private String mCoachName;
-    private List<Player> mPlayers;
+    private ArrayList<Player> mPlayers;
 
     public Team(String teamName, String coachName) {
         mTeamName = teamName;
