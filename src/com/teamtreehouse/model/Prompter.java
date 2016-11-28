@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class Prompter {
         mMenu.put("create", "Create a new team");
         mMenu.put("add", "Add a player to a team");
         mMenu.put("remove", "Remove a player from a team");
+        mMenu.put("height", "View report of a team grouped by height");
+        mMenu.put("balance", "View League Balance Report");
         mMenu.put("quit", "Exit the program");
     }
 
@@ -62,6 +65,13 @@ public class Prompter {
                         mPlayer = promptByTeam();
                         mTeam.removePlayer(mPlayer);
                         System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        break;
+                    case "height":
+                        mTeam = promptForTeam();
+                        heightReport(mTeam);
+                        break;
+                    case "balance":
+                        balanceReport();
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -125,5 +135,40 @@ public class Prompter {
     public Player promptByTeam() throws IOException {
         int index = promptForPlayerIndex(mTeam.getAllPlayers());
         return mTeam.getAllPlayers().get(index);
+    }
+
+    public void heightReport(Team team) {
+        Collections.sort(team.getAllPlayers(), new Comparator<Player>(){
+
+            @Override
+            public int compare(Player o1, Player o2) {
+                return Integer.compare(o1.getHeightInInches(), o2.getHeightInInches());
+            }
+        });
+
+        System.out.printf("Height report for %s%n", team.getTeamName());
+        int counter = 1;
+        for (Player player : team.getAllPlayers()) {
+            System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
+            counter++;
+        }
+    }
+
+    public void balanceReport() {
+        System.out.println("League Balance Report");
+        int counter = 1;
+        int exp = 0;
+        int inexp = 0;
+        for (Team team : mTeams) {
+            for (Player player : team.getAllPlayers()) {
+                if (player.isPreviousExperience()) {
+                    exp++;
+                } else if (!player.isPreviousExperience()) {
+                    inexp++;
+                }
+            }
+            System.out.printf("%d.)  %s, Experienced Players: %d, Inexperienced Players: %d %n", counter, team.getTeamName(), exp, inexp);
+            counter++;
+        }
     }
 }

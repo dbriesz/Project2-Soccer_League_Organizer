@@ -28,9 +28,11 @@ public class Player implements Comparable<Player>, Serializable {
 
     public String getPlayerInfo() {
         if (isPreviousExperience()) {
-            playerInfo = getFirstName() + " " + getLastName() + ", " + getHeightInInches() + "\" (height), " + "has previous experience";
+            playerInfo = getFirstName() + " " + getLastName() +
+            ", " + getHeightInInches() + "\", " + "has previous experience";
         } else {
-            playerInfo = getFirstName() + " " + getLastName() + ", " + getHeightInInches() + "\" (height), " + "no previous experience";
+            playerInfo = getFirstName() + " " + getLastName() +
+            ", " + getHeightInInches() + "\", " + "no previous experience";
         }
 
         return playerInfo;
