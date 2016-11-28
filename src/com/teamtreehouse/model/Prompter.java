@@ -54,6 +54,10 @@ public class Prompter {
                 switch (choice) {
                     case "add":
                         mTeam = promptForTeam();
+                        if (checkTeamSize(mTeam)) {
+                            System.out.println("Sorry, teams are allowed a maximum 11 players.");
+                            break;
+                        }
                         mPlayer = promptForPlayer();
                         mTeam.addPlayer(mPlayer);
                         System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
@@ -62,6 +66,10 @@ public class Prompter {
                         balanceReport();
                         break;
                     case "create":
+                        if (checkTeamMax()) {
+                            System.out.println("Sorry, the team limit has been reached - no new teams may be created.");
+                            break;
+                        }
                         createTeam();
                         break;
                     case "height":
@@ -183,6 +191,27 @@ public class Prompter {
         for (Player player : team.getAllPlayers()) {
             System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
             counter++;
+        }
+    }
+
+    public boolean checkTeamSize(Team team) {
+        boolean size;
+        int counter = 0;
+        for (Player player : team.getAllPlayers()) {
+            counter++;
+        }
+        if (counter > 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkTeamMax() {
+        if (mTeams.size() >= 3) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
