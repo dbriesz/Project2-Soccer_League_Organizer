@@ -25,12 +25,13 @@ public class Prompter {
         mTeams = new ArrayList<>();
         mReader = new BufferedReader(new InputStreamReader(System.in));
         mMenu = new HashMap<String, String>();
-        mMenu.put("create", "Create a new team");
         mMenu.put("add", "Add a player to a team");
-        mMenu.put("remove", "Remove a player from a team");
-        mMenu.put("height", "View report of a team grouped by height");
         mMenu.put("balance", "View League Balance Report");
+        mMenu.put("create", "Create a new team");
+        mMenu.put("height", "View report of a team grouped by height");
         mMenu.put("quit", "Exit the program");
+        mMenu.put("remove", "Remove a player from a team");
+        mMenu.put("roster", "Print out a team roster");
     }
 
     private String promptAction() throws IOException {
@@ -51,14 +52,21 @@ public class Prompter {
             try {
                 choice = promptAction();
                 switch (choice) {
-                    case "create":
-                        createTeam();
-                        break;
                     case "add":
                         mTeam = promptForTeam();
                         mPlayer = promptForPlayer();
                         mTeam.addPlayer(mPlayer);
                         System.out.printf("Added %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        break;
+                    case "balance":
+                        balanceReport();
+                        break;
+                    case "create":
+                        createTeam();
+                        break;
+                    case "height":
+                        mTeam = promptForTeam();
+                        heightReport(mTeam);
                         break;
                     case "remove":
                         mTeam = promptForTeam();
@@ -66,12 +74,9 @@ public class Prompter {
                         mTeam.removePlayer(mPlayer);
                         System.out.printf("Removed %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
                         break;
-                    case "height":
+                    case "roster":
                         mTeam = promptForTeam();
-                        heightReport(mTeam);
-                        break;
-                    case "balance":
-                        balanceReport();
+                        teamRoster(mTeam);
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -168,6 +173,15 @@ public class Prompter {
                 }
             }
             System.out.printf("%d.)  %s, Experienced Players: %d, Inexperienced Players: %d %n", counter, team.getTeamName(), exp, inexp);
+            counter++;
+        }
+    }
+
+    public void teamRoster(Team team) {
+        System.out.printf("Team roster for %s%n", team.getTeamName());
+        int counter = 1;
+        for (Player player : team.getAllPlayers()) {
+            System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
             counter++;
         }
     }
