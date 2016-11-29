@@ -40,4 +40,8 @@ public class Team implements Comparable {
     public List<Player> getAllPlayers() {
         return mPlayers;
     }
+
+    public int getSize() {
+        return mPlayers.size();
+    }
 }

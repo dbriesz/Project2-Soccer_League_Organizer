@@ -171,62 +171,67 @@ public class Prompter {
         }
     }
 
-    public void balanceReport() {
+        public void balanceReport() {
         System.out.println("League Balance Report");
-        int counter = 1;
-        int exp = 0;
-        int inexp = 0;
+        Map<Team, Integer> experiencedPlayerCounts = new HashMap<Team, Integer>();
+
         for (Team team : mTeams) {
+            int exp = 0;
             for (Player player : team.getAllPlayers()) {
                 if (player.isPreviousExperience()) {
                     exp++;
-                } else if (!player.isPreviousExperience()) {
-                    inexp++;
                 }
             }
-            System.out.printf("%d.)  %s, Experienced Players: %d, Inexperienced Players: %d %n", counter, team.getTeamName(), exp, inexp);
-            counter++;
+            experiencedPlayerCounts.put(team, exp);
         }
-    }
 
-    public void teamRoster(Team team) {
-        System.out.printf("Team roster for %s%n", team.getTeamName());
-        int counter = 1;
-        for (Player player : team.getAllPlayers()) {
-            System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
-            counter++;
-        }
-    }
-
-    public boolean checkTeamSize(Team team) {
-        int counter = 0;
-        for (Player player : team.getAllPlayers()) {
-            counter++;
-        }
-        if (counter > 11) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean checkTeamMax() {
-        if (mTeams.size() >= 3) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean checkForDuplicate(Player player) {
-        boolean isMatch = false;
         for (Team team : mTeams) {
-            for (Player play : team.getAllPlayers()) {
-                if (team.getAllPlayers().contains(player)) {
-                    isMatch = true;
-                }
+            int experiencedCount = experiencedPlayerCounts.get(team);
+            int inexperiencedCount = team.getSize() - experiencedCount;
+            float avg = (((float)experiencedCount / team.getSize()) * 100);
+            System.out.printf("%s, Experienced Players: %d, Inexperienced Players: %d, " +
+                    "Average Experience Level: %.1f%% %n", team.getTeamName(), experiencedCount, inexperiencedCount, avg);
             }
         }
-        return isMatch;
-    }
+
+        public void teamRoster (Team team){
+            System.out.printf("Team roster for %s%n", team.getTeamName());
+            int counter = 1;
+            for (Player player : team.getAllPlayers()) {
+                System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
+                counter++;
+            }
+        }
+
+        public boolean checkTeamSize (Team team){
+            int counter = 0;
+            for (Player player : team.getAllPlayers()) {
+                counter++;
+            }
+            if (counter > 11) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean checkTeamMax () {
+            if (mTeams.size() >= 3) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public boolean checkForDuplicate (Player player) {
+            boolean isMatch = false;
+            for (Team team : mTeams) {
+                for (Player play : team.getAllPlayers()) {
+                    if (team.getAllPlayers().contains(player)) {
+                        isMatch = true;
+                    }
+                }
+            }
+            return isMatch;
+        }
 }
