@@ -89,7 +89,7 @@ public class Prompter {
                         break;
                     case "roster":
                         mTeam = promptForTeam();
-                        teamRoster(mTeam);
+                        printTeamRoster(mTeam);
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -214,7 +214,7 @@ public class Prompter {
             }
         }
 
-        public void teamRoster (Team team){
+        public void printTeamRoster (Team team){
             System.out.printf("Team roster for %s%n", team.getTeamName());
             int counter = 1;
             for (Player player : team.getAllPlayers()) {
