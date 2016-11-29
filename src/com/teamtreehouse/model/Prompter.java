@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -172,25 +173,44 @@ public class Prompter {
     }
 
         public void balanceReport() {
-        System.out.println("League Balance Report");
-        Map<Team, Integer> experiencedPlayerCounts = new HashMap<Team, Integer>();
+            System.out.println("League Balance Report");
+            Map<Team, Integer> experiencedPlayerCounts = new HashMap<Team, Integer>();
 
-        for (Team team : mTeams) {
-            int exp = 0;
-            for (Player player : team.getAllPlayers()) {
-                if (player.isPreviousExperience()) {
-                    exp++;
+            for (Team team : mTeams) {
+                int exp = 0;
+                for (Player player : team.getAllPlayers()) {
+                    if (player.isPreviousExperience()) {
+                        exp++;
+                    }
                 }
+                experiencedPlayerCounts.put(team, exp);
             }
-            experiencedPlayerCounts.put(team, exp);
-        }
 
-        for (Team team : mTeams) {
-            int experiencedCount = experiencedPlayerCounts.get(team);
-            int inexperiencedCount = team.getSize() - experiencedCount;
-            float avg = (((float)experiencedCount / team.getSize()) * 100);
-            System.out.printf("%s, Experienced Players: %d, Inexperienced Players: %d, " +
-                    "Average Experience Level: %.1f%% %n", team.getTeamName(), experiencedCount, inexperiencedCount, avg);
+            for (Team team : mTeams) {
+                int experiencedCount = experiencedPlayerCounts.get(team);
+                int inexperiencedCount = team.getSize() - experiencedCount;
+                float avg = (((float) experiencedCount / team.getSize()) * 100);
+                System.out.printf("%s, Experienced Players: %d, Inexperienced Players: %d, " +
+                                "Average Experience Level: %.1f%%%n",
+                                team.getTeamName(), experiencedCount, inexperiencedCount, avg);
+            }
+
+            Map<Integer, Integer> countsByHeight = new HashMap<Integer, Integer>();
+            for (Team team : mTeams) {
+                int counter = 0;
+                for (Player player : team.getAllPlayers()) {
+                    int heightValue = player.getHeightInInches();
+                    Integer heightCounts = countsByHeight.get(heightValue);
+                    if (heightCounts == null) {
+                        heightCounts = 0;
+                    }
+                    heightCounts++;
+                    countsByHeight.put(heightValue, heightCounts);
+                }
+
+                for (Map.Entry<Integer, Integer> entry : countsByHeight.entrySet()) {
+                    System.out.printf("%nHeight: %d  Number of Players: %d%n", entry.getKey(), entry.getValue());
+                }
             }
         }
 
