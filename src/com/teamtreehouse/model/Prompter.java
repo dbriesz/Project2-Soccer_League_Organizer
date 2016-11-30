@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -118,25 +117,35 @@ public class Prompter {
 
     private int promptForTeamIndex(List<Team> teams) throws IOException {
         int counter = 1;
+        int choice = -1;
         for (Team team : teams) {
             System.out.printf("%d.)  %s %n", counter, team.getTeamName());
             counter++;
         }
-        System.out.print("Select the team:  ");
-        String optionAsString = mReader.readLine();
-        int choice = Integer.parseInt(optionAsString.trim());
+
+        do {
+            System.out.print("Select the team:  ");
+            String optionAsString = mReader.readLine();
+            choice = Integer.parseInt(optionAsString.trim());
+        } while (choice > teams.size() || choice < 1);
+
         return choice - 1;
     }
 
     private int promptForPlayerIndex(List<Player> players) throws IOException {
         int counter = 1;
+        int choice = -1;
         for (Player player : players) {
             System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
             counter++;
         }
-        System.out.printf("Select a player:  ", mTeam.getTeamName());
-        String optionAsString = mReader.readLine();
-        int choice = Integer.parseInt(optionAsString.trim());
+
+        do {
+            System.out.printf("Select a player:  ", mTeam.getTeamName());
+            String optionAsString = mReader.readLine();
+            choice = Integer.parseInt(optionAsString.trim());
+        } while (choice > players.size() || choice < 1);
+
         return choice - 1;
     }
 
@@ -170,6 +179,7 @@ public class Prompter {
             System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
             counter++;
         }
+        System.out.println();
     }
 
         public void balanceReport() {
@@ -209,9 +219,10 @@ public class Prompter {
                 }
 
                 for (Map.Entry<Integer, Integer> entry : countsByHeight.entrySet()) {
-                    System.out.printf("%nHeight: %d  Number of Players: %d%n", entry.getKey(), entry.getValue());
+                    System.out.printf("%nTeam: %s  Height: %d  Number of Players: %d%n", team.getTeamName(), entry.getKey(), entry.getValue());
                 }
             }
+            System.out.println();
         }
 
         public void printTeamRoster (Team team){
@@ -221,6 +232,7 @@ public class Prompter {
                 System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
                 counter++;
             }
+            System.out.println();
         }
 
         public boolean checkTeamSize (Team team){
