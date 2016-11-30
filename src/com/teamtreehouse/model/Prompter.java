@@ -124,9 +124,14 @@ public class Prompter {
         }
 
         do {
-            System.out.print("Select the team:  ");
-            String optionAsString = mReader.readLine();
-            choice = Integer.parseInt(optionAsString.trim());
+            try {
+                System.out.print("Select the team:  ");
+                String optionAsString = mReader.readLine();
+                choice = Integer.parseInt(optionAsString.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input.  Please enter a number.");
+            }
+
         } while (choice > teams.size() || choice < 1);
 
         return choice - 1;
@@ -141,9 +146,13 @@ public class Prompter {
         }
 
         do {
-            System.out.printf("Select a player:  ", mTeam.getTeamName());
-            String optionAsString = mReader.readLine();
-            choice = Integer.parseInt(optionAsString.trim());
+            try {
+                System.out.printf("Select a player:  ", mTeam.getTeamName());
+                String optionAsString = mReader.readLine();
+                choice = Integer.parseInt(optionAsString.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input.  Please enter a number.");
+            }
         } while (choice > players.size() || choice < 1);
 
         return choice - 1;
@@ -173,7 +182,7 @@ public class Prompter {
             }
         });
 
-        System.out.printf("Height report for %s%n", team.getTeamName());
+        System.out.printf("Height report for %s%n%n", team.getTeamName());
         int counter = 1;
         for (Player player : team.getAllPlayers()) {
             System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
@@ -183,7 +192,7 @@ public class Prompter {
     }
 
         public void balanceReport() {
-            System.out.println("League Balance Report");
+            System.out.println("League Balance Report\n");
             Map<Team, Integer> experiencedPlayerCounts = new HashMap<Team, Integer>();
 
             for (Team team : mTeams) {
@@ -226,7 +235,7 @@ public class Prompter {
         }
 
         public void printTeamRoster (Team team){
-            System.out.printf("Team roster for %s%n", team.getTeamName());
+            System.out.printf("Team roster for %s%n%n", team.getTeamName());
             int counter = 1;
             for (Player player : team.getAllPlayers()) {
                 System.out.printf("%d.)  %s %n", counter, player.getPlayerInfo());
