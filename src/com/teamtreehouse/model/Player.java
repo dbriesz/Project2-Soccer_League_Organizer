@@ -51,7 +51,11 @@ public class Player implements Comparable<Player>, Serializable {
         if (equals(other)) {
             return 0;
         }
-        return lastName.compareTo(other.lastName);
+        if (lastName.equals(other.lastName)) {
+            return firstName.compareTo(other.firstName);
+        } else {
+            return lastName.compareTo(other.lastName);
+        }
     }
 
     @Override
