@@ -11,7 +11,6 @@ public class LeagueManager {
         Player[] players = Players.load();
         Prompter prompter = new Prompter(Players.load());
         System.out.printf("There are currently %d registered players.%n", players.length);
-
         prompter.run();
     }
 }

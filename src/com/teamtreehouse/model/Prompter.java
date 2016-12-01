@@ -3,15 +3,9 @@ package com.teamtreehouse.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Prompter {
-    public Team mTeam;
     public Player mPlayer;
     private List<Player> mAllPlayers;
     private List<Team> mTeams;
@@ -53,18 +47,14 @@ public class Prompter {
                 choice = promptAction();
                 switch (choice) {
                     case "add":
-                        mTeam = promptForTeam();
-                        if (checkTeamSize(mTeam)) {
+                        Team team = promptForTeam();
+                        if (checkTeamSize(team)) {
                             System.out.println("%nSorry, teams are allowed a maximum 11 players.%n%n");
                             break;
                         }
                         mPlayer = promptForPlayer();
-                        if (checkForDuplicate(mPlayer)) {
-                            System.out.println("%nSorry, that player is already on a team.%n%n");
-                            break;
-                        }
-                        mTeam.addPlayer(mPlayer);
-                        System.out.printf("%nAdded %s to team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        team.addPlayer(mPlayer);
+                        System.out.printf("%nAdded %s to team %s.%n%n", mPlayer.getPlayerInfo(), team.getTeamName());
                         break;
                     case "balance":
                         balanceReport();
@@ -77,18 +67,18 @@ public class Prompter {
                         createTeam();
                         break;
                     case "height":
-                        mTeam = promptForTeam();
-                        heightReport(mTeam);
+                        team = promptForTeam();
+                        heightReport(team);
                         break;
                     case "remove":
-                        mTeam = promptForTeam();
-                        mPlayer = promptByTeam();
-                        mTeam.removePlayer(mPlayer);
-                        System.out.printf("%nRemoved %s from team %s.%n%n", mPlayer.getPlayerInfo(), mTeam.getTeamName());
+                        team = promptForTeam();
+                        mPlayer = promptByTeam(team);
+                        team.removePlayer(mPlayer);
+                        System.out.printf("%nRemoved %s from team %s.%n%n", mPlayer.getPlayerInfo(), team.getTeamName());
                         break;
                     case "roster":
-                        mTeam = promptForTeam();
-                        printTeamRoster(mTeam);
+                        team = promptForTeam();
+                        printTeamRoster(team);
                         break;
                     case "quit":
                         System.out.println("Goodbye!");
@@ -147,7 +137,7 @@ public class Prompter {
 
         do {
             try {
-                System.out.printf("Select a player:  ", mTeam.getTeamName());
+                System.out.printf("Select a player:  ");
                 String optionAsString = mReader.readLine();
                 choice = Integer.parseInt(optionAsString.trim());
             } catch (NumberFormatException e) {
@@ -164,13 +154,13 @@ public class Prompter {
     }
 
     public Player promptForPlayer() throws IOException {
-        int index = promptForPlayerIndex(mAllPlayers);
-        return mAllPlayers.get(index);
+        int index = promptForPlayerIndex(getAvailablePlayers());
+        return getAvailablePlayers().get(index);
     }
 
-    public Player promptByTeam() throws IOException {
-        int index = promptForPlayerIndex(mTeam.getAllPlayers());
-        return mTeam.getAllPlayers().get(index);
+    public Player promptByTeam(Team team) throws IOException {
+        int index = promptForPlayerIndex(team.getAllPlayers());
+        return team.getAllPlayers().get(index);
     }
 
     public void heightReport(Team team) {
@@ -234,7 +224,7 @@ public class Prompter {
             System.out.println();
         }
 
-        public void printTeamRoster (Team team){
+        public void printTeamRoster(Team team){
             System.out.printf("Team roster for %s%n%n", team.getTeamName());
             int counter = 1;
             for (Player player : team.getAllPlayers()) {
@@ -244,7 +234,7 @@ public class Prompter {
             System.out.println();
         }
 
-        public boolean checkTeamSize (Team team){
+        public boolean checkTeamSize(Team team){
             int counter = 0;
             for (Player player : team.getAllPlayers()) {
                 counter++;
@@ -256,7 +246,7 @@ public class Prompter {
             }
         }
 
-        public boolean checkTeamMax () {
+        public boolean checkTeamMax() {
             if (mTeams.size() >= 3) {
                 return true;
             } else {
@@ -264,15 +254,12 @@ public class Prompter {
             }
         }
 
-        public boolean checkForDuplicate (Player player) {
-            boolean isMatch = false;
+        public List<Player> getAvailablePlayers() {
+            TreeSet<Player> availablePlayers = new TreeSet<>();
+            availablePlayers.addAll(mAllPlayers);
             for (Team team : mTeams) {
-                for (Player play : team.getAllPlayers()) {
-                    if (team.getAllPlayers().contains(player)) {
-                        isMatch = true;
-                    }
-                }
+                availablePlayers.removeAll(team.getAllPlayers());
             }
-            return isMatch;
+            return new ArrayList<Player>(availablePlayers);
         }
 }
