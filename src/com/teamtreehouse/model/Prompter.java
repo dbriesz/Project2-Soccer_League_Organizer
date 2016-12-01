@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Prompter {
-    public Player mPlayer;
     private List<Player> mAllPlayers;
     private List<Team> mTeams;
     private BufferedReader mReader;
@@ -52,9 +51,9 @@ public class Prompter {
                             System.out.println("%nSorry, teams are allowed a maximum 11 players.%n%n");
                             break;
                         }
-                        mPlayer = promptForPlayer();
-                        team.addPlayer(mPlayer);
-                        System.out.printf("%nAdded %s to team %s.%n%n", mPlayer.getPlayerInfo(), team.getTeamName());
+                        Player player = promptForPlayer();
+                        team.addPlayer(player);
+                        System.out.printf("%nAdded %s to team %s.%n%n", player.getPlayerInfo(), team.getTeamName());
                         break;
                     case "balance":
                         balanceReport();
@@ -72,9 +71,9 @@ public class Prompter {
                         break;
                     case "remove":
                         team = promptForTeam();
-                        mPlayer = promptByTeam(team);
-                        team.removePlayer(mPlayer);
-                        System.out.printf("%nRemoved %s from team %s.%n%n", mPlayer.getPlayerInfo(), team.getTeamName());
+                        player = promptByTeam(team);
+                        team.removePlayer(player);
+                        System.out.printf("%nRemoved %s from team %s.%n%n", player.getPlayerInfo(), team.getTeamName());
                         break;
                     case "roster":
                         team = promptForTeam();
@@ -255,7 +254,7 @@ public class Prompter {
         }
 
         public List<Player> getAvailablePlayers() {
-            TreeSet<Player> availablePlayers = new TreeSet<>();
+            Set<Player> availablePlayers = new TreeSet<>();
             availablePlayers.addAll(mAllPlayers);
             for (Team team : mTeams) {
                 availablePlayers.removeAll(team.getAllPlayers());

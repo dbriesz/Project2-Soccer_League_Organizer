@@ -26,11 +26,6 @@ public class Player implements Comparable<Player>, Serializable {
         return lastName;
     }
 
-    public String getFullName() {
-        String fullName = getFirstName() + " " + getLastName();
-        return fullName;
-    }
-
     public String getPlayerInfo() {
         if (isPreviousExperience()) {
             playerInfo = getFirstName() + " " + getLastName() +
@@ -53,8 +48,7 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public int compareTo(Player other) {
-        Player player = (Player) other;
-        if (equals(player)) {
+        if (equals(other)) {
             return 0;
         }
         return lastName.compareTo(other.lastName);
